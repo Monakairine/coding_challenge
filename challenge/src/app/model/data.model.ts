@@ -1,37 +1,37 @@
-export interface IBills {
+export interface BillsModel {
   id: number;
   title: string;
   sponsor_id: number;
 }
 
-export interface ILegislators {
+export interface LegislatorsModel {
   id: number;
   name: string;
 }
 
-export interface IVotes {
-  id: Number;
-  bill_id: Number;
+export interface VotesModel {
+  id: number;
+  bill_id: number;
 }
 
-export interface IVoteResults {
-  id: Number;
-  legislator_id: Number;
-  vote_id: Number;
-  vote_type: Number;
+export interface VoteResultsModel {
+  id: number;
+  legislator_id: number;
+  vote_id: number;
+  vote_type: number;
 }
 
-export interface ILegislatorOutput {
-  id: Number;
-  name: String;
-  num_supported_bills: Number;
-  num_opposed_bills: Number;
+export interface LegislatorOutputModel {
+  id: number;
+  name: string;
+  num_supported_bills: number;
+  num_opposed_bills: number;
 }
 
-export interface IBillOutput {
-  id: Number;
-  title: String;
-  supporter_count: Number;
-  opposer_count: Number;
-  primary_sponsor: String;
+export interface BillOutputModel {
+  id: number;
+  title: string;
+  supporter_count: number;
+  opposer_count: number;
+  primary_sponsor: string;
 }
