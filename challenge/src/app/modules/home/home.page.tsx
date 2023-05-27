@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from '../components/header.component';
 import { Footer } from '../components/footer.component';
 import useFetchDataFromFiles from './useFetchDataFromFiles';
+import { LegislatorsModel } from 'app/model/data.model';
 
 
 export const HomePage: React.FC<Record<string, never>> = () => {
@@ -36,7 +37,7 @@ export const HomePage: React.FC<Record<string, never>> = () => {
 
       <h2>List of Legislators</h2>
       <ul>
-        {legislators.map((legislator: any) => (
+        {legislators.map((legislator: LegislatorsModel) => (
           <li key={legislator.id}>{legislator.name} {legislator.id}</li>
         ))}
       </ul>
