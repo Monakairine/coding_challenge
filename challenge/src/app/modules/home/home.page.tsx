@@ -33,7 +33,7 @@ export const HomePage: React.FC<Record<string, never>> = () => {
           <strong>{strings.opposedBills}</strong> {legislatorStat.num_opposed_bills}
         </li>
       ))}
-      <button onClick={() => downloadCSV(legislatorsStas)}>
+      <button onClick={() => downloadCSV(legislatorsStas, "legislators-support-oppose-count.csv")}>
         {strings.download}
       </button>
       <Footer />

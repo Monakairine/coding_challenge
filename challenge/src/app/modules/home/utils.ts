@@ -67,7 +67,7 @@ export const calculateVoteStatistics = (
 
 
 
-export const downloadCSV = (data: LegislatorOutputModel[]) => {
+export const downloadCSV = <T>(data: T[], fileName: string) => {
   const csvContent = [
     Object.keys(data[0]).join(","), // Header row
     ...data.map((item) => Object.values(item).join(",")), // Data rows
@@ -77,8 +77,9 @@ export const downloadCSV = (data: LegislatorOutputModel[]) => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "legislators-support-oppose-count.csv";
+  a.download = fileName;
   a.click();
   URL.revokeObjectURL(url);
 };
+
 
