@@ -4,6 +4,7 @@ import { Footer } from '../components/footer.component';
 import useFetchDataFromFiles from './useFetchDataFromFiles';
 import { BillsModel, LegislatorsModel, VotesModel, VoteResultsModel, LegislatorOutputModel } from 'app/model/data.model';
 import { files } from './files';
+import { strings } from './strings';
 
 
 function getBillsByVoteType(legislatorId: number, voteResults: VoteResultsModel[], votes: VotesModel[], bills: BillsModel[], voteType: number): Set<number> {
@@ -66,21 +67,15 @@ export const HomePage: React.FC<Record<string, never>> = () => {
     <React.Fragment>
       <Header />
       <h1>Legislator Analysis</h1>
-      <p>
-        Welcome to the Legislator Analysis webpage. Here, we have performed an analysis on a dataset containing information about legislators, bills, votes, and vote results.
-      </p>
-      <p>
-        We have answered the following questions based on the dataset:
-      </p>
+      <p>{strings.welcomeMessage}</p>
+      <p>{strings.questionsMessage}</p>
       <ol>
-        <li>For every legislator in the dataset, how many bills did the legislator support (voted for the bill)? How many bills did the legislator oppose?</li>
-        <li>For every bill in the dataset, how many legislators supported the bill? How many legislators opposed the bill? Who was the primary sponsor of the bill?</li>
+        <li>{strings.question1}</li>
+        <li>{strings.question2}</li>
       </ol>
-      <p>
-        The results of the analysis will be displayed below. Please note that the dataset used for this analysis is provided separately.
-      </p>
+      <p>{strings.datasetNote}</p>
 
-      <h2>List of Legislators</h2>
+      <h2>{strings.question1Answer}</h2>
 
       {legislatorsStas.map((legislatorStat) => (
         <li key={legislatorStat.id}>
