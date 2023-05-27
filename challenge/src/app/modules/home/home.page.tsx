@@ -12,51 +12,47 @@ const files = [
   { name: "votes", file: "data/votes.csv" },
 ];
 
+function getBillsByVoteType(legislatorId: number, voteResults: VoteResultsModel[], votes: VotesModel[], bills: BillsModel[], voteType: number): Set<number> {
+  const billsSet = new Set<number>();
+
+  for (const voteResult of voteResults) {
+    if (voteResult.legislator_id === legislatorId) {
+      const voteId = voteResult.vote_id;
+      const vote = votes.find((v) => v.id === voteId);
+
+      if (vote) {
+        const billId = vote.bill_id;
+        const bill = bills.find((b) => b.id === billId);
+
+        if (bill && Number(voteResult.vote_type) === voteType) {
+          billsSet.add(billId);
+        }
+      }
+    }
+  }
+
+  return billsSet;
+}
 
 
 function calculateVoteStatistics(
   legislators: LegislatorsModel[],
   bills: BillsModel[],
-  vote_results: VoteResultsModel[],
+  voteResults: VoteResultsModel[],
   votes: VotesModel[]
 ): LegislatorOutputModel[] {
   const statistics: LegislatorOutputModel[] = [];
 
   for (const legislator of legislators) {
     const legislatorId = legislator.id;
-    const supportedBillsSet = new Set<number>();
-    const opposedBillsSet = new Set<number>();
-
-    for (const voteResult of vote_results) {
-      if (voteResult.legislator_id === legislatorId) {
-        const voteId = voteResult.vote_id;
-        const vote = votes.find((v) => v.id === voteId);
-
-        if (vote) {
-          const billId = vote.bill_id;
-          const bill = bills.find((b) => b.id === billId);
-
-          if (bill) {
-            const voteType = Number(voteResult.vote_type);
-
-            if (voteType === 1) {
-              supportedBillsSet.add(billId);
-            } else {
-              opposedBillsSet.add(billId);
-            }
-          }
-        }
-      }
-    }
-
-    const num_supported_bills = supportedBillsSet.size;
-    const num_opposed_bills = opposedBillsSet.size;
+    const supportedBills = getBillsByVoteType(legislatorId, voteResults, votes, bills, 1);
+    const opposedBills = getBillsByVoteType(legislatorId, voteResults, votes, bills, 2);
 
     statistics.push({
       id: legislatorId,
       name: legislator.name,
-      num_supported_bills,
-      num_opposed_bills,
+      num_supported_bills: supportedBills.size,
+      num_opposed_bills: opposedBills.size,
     });
   }
 
