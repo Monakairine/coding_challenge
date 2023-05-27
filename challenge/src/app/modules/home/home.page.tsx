@@ -1,10 +1,21 @@
 import React from 'react';
 import { Header } from '../components/header.component';
 import { Footer } from '../components/footer.component';
+import useFetchDataFromFiles from './useFetchDataFromFiles';
 
 
 export const HomePage: React.FC<Record<string, never>> = () => {
 
+  const files = [
+    { name: "bills", file: "data/bills.csv" },
+    { name: "legislators", file: "data/legislators.csv" },
+    { name: "voteResults", file: "data/vote-results.csv" },
+    { name: "votes", file: "data/votes.csv" },
+  ];
+
+  const { legislators } = useFetchDataFromFiles(files);
+
+  
   return (
     <React.Fragment>
       <Header />
@@ -23,13 +34,23 @@ export const HomePage: React.FC<Record<string, never>> = () => {
         The results of the analysis will be displayed below. Please note that the dataset used for this analysis is provided separately.
       </p>
 
- 
+      <h2>List of Legislators</h2>
+      <ul>
+        {legislators.map((legislator: any) => (
+          <li key={legislator.id}>{legislator.name} {legislator.id}</li>
+        ))}
+      </ul>
+
+
       <Footer />
     </React.Fragment>
   );
 };
 
 export default HomePage;
+
+
+
 
 
 
