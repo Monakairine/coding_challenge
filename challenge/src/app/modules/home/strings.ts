@@ -1,4 +1,5 @@
 export const strings = {
+  title: "Legislator analysis",
   welcomeMessage:
     "Welcome to the Legislator Analysis webpage. Here, we have performed an analysis on a dataset containing information about legislators, bills, votes, and vote results.",
   questionsMessage:
@@ -10,4 +11,9 @@ export const strings = {
   datasetNote:
     "The results of the analysis will be displayed below. Please note that the dataset used for this analysis is provided separately.",
   question1Answer: "Question 1 answer:",
+  name: "name",
+  id: "id",
+  supportedBills: "Supported bills",
+  opposedBills: "Opposed Bills",
+  download: "download"
 };

@@ -54,19 +54,30 @@ function calculateVoteStatistics(
   return statistics;
 }
 
+function downloadCSV(data: LegislatorOutputModel[]) {
+  const csvContent = [
+    Object.keys(data[0]).join(','), // Header row
+    ...data.map((item) => Object.values(item).join(',')), // Data rows
+  ].join('\n');
 
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'legislators-support-oppose-count.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 export const HomePage: React.FC<Record<string, never>> = () => {
 
   const { data, isLoading } = useFetchDataFromFiles(files);
-
   const legislatorsStas = !isLoading ? calculateVoteStatistics(data.legislators, data.bills, data.voteResults, data.votes) : [];
-
 
   return (
     <React.Fragment>
       <Header />
-      <h1>Legislator Analysis</h1>
+      <h1>{strings.title}</h1>
       <p>{strings.welcomeMessage}</p>
       <p>{strings.questionsMessage}</p>
       <ol>
@@ -79,14 +90,14 @@ export const HomePage: React.FC<Record<string, never>> = () => {
 
       {legislatorsStas.map((legislatorStat) => (
         <li key={legislatorStat.id}>
-          <strong>Name:</strong> {legislatorStat.name}, <strong>ID:</strong> {legislatorStat.id},{' '}
-          <strong>Supported Bills:</strong> {legislatorStat.num_supported_bills},{' '}
-          <strong>Opposed Bills:</strong> {legislatorStat.num_opposed_bills}
+          <strong>{strings.name}</strong> {legislatorStat.name}, <strong>{strings.id}</strong> {legislatorStat.id},{' '}
+          <strong>{strings.supportedBills}</strong> {legislatorStat.num_supported_bills},{' '}
+          <strong>{strings.opposedBills}</strong> {legislatorStat.num_opposed_bills}
         </li>
-      ))}   
-
-
-
+      ))}
+      <button onClick={() => downloadCSV(legislatorsStas)}>
+        {strings.download}
+      </button>
       <Footer />
     </React.Fragment>
   );
