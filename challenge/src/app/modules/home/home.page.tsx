@@ -3,14 +3,8 @@ import { Header } from '../components/header.component';
 import { Footer } from '../components/footer.component';
 import useFetchDataFromFiles from './useFetchDataFromFiles';
 import { BillsModel, LegislatorsModel, VotesModel, VoteResultsModel, LegislatorOutputModel } from 'app/model/data.model';
+import { files } from './files';
 
-
-const files = [
-  { name: "bills", file: "data/bills.csv" },
-  { name: "legislators", file: "data/legislators.csv" },
-  { name: "voteResults", file: "data/vote_results.csv" },
-  { name: "votes", file: "data/votes.csv" },
-];
 
 function getBillsByVoteType(legislatorId: number, voteResults: VoteResultsModel[], votes: VotesModel[], bills: BillsModel[], voteType: number): Set<number> {
   const billsSet = new Set<number>();
@@ -65,9 +59,7 @@ export const HomePage: React.FC<Record<string, never>> = () => {
 
   const { data, isLoading } = useFetchDataFromFiles(files);
 
-  const { legislators, bills, voteResults, votes } = data
-
-  const legislatorsStas = !isLoading ? calculateVoteStatistics(legislators, bills, voteResults, votes) : [];
+  const legislatorsStas = !isLoading ? calculateVoteStatistics(data.legislators, data.bills, data.voteResults, data.votes) : [];
 
 
   return (
