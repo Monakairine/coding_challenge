@@ -1,7 +1,7 @@
 export interface BillsModel {
   id: number;
   title: string;
-  sponsor_id: number;
+  primary_sponsor: number;
 }
 
 export interface LegislatorsModel {

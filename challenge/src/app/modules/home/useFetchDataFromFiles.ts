@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Papa from "papaparse";
 
-
 interface FileData {
   file: string;
   name: string;
@@ -17,6 +16,7 @@ export default function useFetchDataFromFiles(files: FileData[]) {
   );
 
   const [data, setData] = useState(initialState);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async (
@@ -34,12 +34,22 @@ export default function useFetchDataFromFiles(files: FileData[]) {
       }
     };
 
-    files.forEach(({ file, name }) =>
-      fetchData(file, (parsedData: any) =>
-        setData((prevData: any) => ({ ...prevData, [name]: parsedData }))
-      )
-    );
+    const fetchDataFromAllFiles = async () => {
+      try {
+        for (const { file, name } of files) {
+          await fetchData(file, (parsedData: any) =>
+            setData((prevData: any) => ({ ...prevData, [name]: parsedData }))
+          );
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchDataFromAllFiles();
   }, [files]);
 
-  return data;
+  return { data, isLoading };
 }
