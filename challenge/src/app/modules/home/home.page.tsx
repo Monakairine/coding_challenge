@@ -14,7 +14,7 @@ export const HomePage: React.FC<Record<string, never>> = () => {
   const { data, isLoading } = useFetchDataFromFiles(files);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Body>Loading...</Body>;
   }
 
   const legislatorsStas =  calculateVoteStatistics(data.legislators, data.bills, data.voteResults, data.votes);
@@ -34,11 +34,11 @@ export const HomePage: React.FC<Record<string, never>> = () => {
 
       <H2>{strings.question1.subtitleAnswer}</H2>
       {legislatorsStas.map((legislatorStat) => (
-        <li key={legislatorStat.id}>
+        <div key={legislatorStat.id}>
           <strong>{strings.question1.name}</strong> {legislatorStat.name}, <strong>{strings.question1.id}</strong> {legislatorStat.id},
           <strong>{strings.question1.supportedBills}</strong> {legislatorStat.num_supported_bills},{' '}
           <strong>{strings.question1.opposedBills}</strong> {legislatorStat.num_opposed_bills}
-        </li>
+        </div>
       ))}
       <button onClick={() => downloadCSV(legislatorsStas, "legislators-support-oppose-count.csv")}>
         {strings.download}
@@ -47,11 +47,11 @@ export const HomePage: React.FC<Record<string, never>> = () => {
       <H2>{strings.question2.subtitleAnswer}</H2>
 
       {billStats.map((bill) => (
-        <li key={bill.id}>
+        <div key={bill.id}>
           <strong>{strings.question2.bill}</strong> {bill.title}, 
           <strong>{strings.question2.supporters}</strong> {bill.supporter_count}, 
           <strong>{strings.question2.opposers}</strong> {bill.opposer_count}
-        </li>
+        </div>
       ))}
       <button onClick={() => downloadCSV(billStats, "bills.csv")}>
         {strings.download}

@@ -25,14 +25,19 @@ export const H2 = styled.h2`
   margin-bottom: ${Spacing.XSmall};
 `;
 
-export const Body = styled.p`
+interface BodyProps {
+  bold?: boolean;
+}
+
+export const Body = styled.p<BodyProps>`
   color: ${Color.Gray};
   margin: 0;
   font-size: ${FontSize.XSmall};
   font-family: ${FontFamily.Primary};
-  font-weight: ${FontWeight.Normal};
+  font-weight: ${(props) => (props.bold ? FontWeight.Bold : FontWeight.Normal)};
   line-height: ${LineHeight.XLarge};
   padding: 0;
   margin: 0;
 `;
+
 
