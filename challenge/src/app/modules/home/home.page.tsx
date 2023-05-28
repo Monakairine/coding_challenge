@@ -1,10 +1,12 @@
-import React from 'react';
+import * as React from 'react';
+
 import { Header } from '../components/header.component';
 import { Footer } from '../components/footer.component';
 import useFetchDataFromFiles from './useFetchDataFromFiles';
 import { files } from './files';
 import { strings } from './strings';
 import { calculateBillStatistics, calculateVoteStatistics, downloadCSV } from './utils';
+import { Body, H1, H2 } from 'app/components/atm.typography/typography.component.style';
 
 
 export const HomePage: React.FC<Record<string, never>> = () => {
@@ -20,18 +22,17 @@ export const HomePage: React.FC<Record<string, never>> = () => {
 
 
   return (
-    <React.Fragment>
+    <>
       <Header />
-      <h1>{strings.title}</h1>
-      <p>{strings.welcomeMessage}</p>
-      <p>{strings.questionsMessage}</p>
+      <H1>{strings.title}</H1>
+      <Body>{strings.welcomeMessage}</Body>
       <ol>
-        <li>{strings.question1.question}</li>
-        <li>{strings.question2.question}</li>
+        <li><Body>{strings.question1.question}</Body></li>
+        <li><Body>{strings.question2.question}</Body></li>
       </ol>
-      <p>{strings.datasetNote}</p>
+      <Body>{strings.datasetNote}</Body>
 
-      <h2>{strings.question1.subtitleAnswer}</h2>
+      <H2>{strings.question1.subtitleAnswer}</H2>
       {legislatorsStas.map((legislatorStat) => (
         <li key={legislatorStat.id}>
           <strong>{strings.question1.name}</strong> {legislatorStat.name}, <strong>{strings.question1.id}</strong> {legislatorStat.id},
@@ -43,7 +44,7 @@ export const HomePage: React.FC<Record<string, never>> = () => {
         {strings.download}
       </button>
 
-      <h2>{strings.question2.subtitleAnswer}</h2>
+      <H2>{strings.question2.subtitleAnswer}</H2>
 
       {billStats.map((bill) => (
         <li key={bill.id}>
@@ -56,7 +57,7 @@ export const HomePage: React.FC<Record<string, never>> = () => {
         {strings.download}
       </button>
       <Footer />
-    </React.Fragment>
+    </>
   );
 };
 
