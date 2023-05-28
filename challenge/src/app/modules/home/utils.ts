@@ -1,4 +1,11 @@
-import { VoteResultsModel, VotesModel, BillsModel, LegislatorOutputModel, LegislatorsModel } from "app/model/data.model";
+import {
+  VoteResultsModel,
+  VotesModel,
+  BillsModel,
+  LegislatorStatsModel,
+  LegislatorsModel,
+  BillStatsModel,
+} from "app/model/data.model";
 
 
 export const getBillsByVoteType = (
@@ -7,26 +14,28 @@ export const getBillsByVoteType = (
   votes: VotesModel[],
   bills: BillsModel[],
   voteType: number
-): Set<number> => {
-  const billsSet = new Set<number>();
+): number[] => {
+  const billsCounts = [];
 
-  for (const voteResult of voteResults) {
-    if (voteResult.legislator_id === legislatorId) {
+  const relevantVoteResults = voteResults.filter(
+      (voteResult) => voteResult.legislator_id === legislatorId
+    );
+
+  for (const voteResult of relevantVoteResults) {
       const voteId = voteResult.vote_id;
-      const vote = votes.find((v) => v.id === voteId);
+      const vote = votes.find((v) => Number(v.id) === Number(voteId));
 
       if (vote) {
         const billId = vote.bill_id;
-        const bill = bills.find((b) => b.id === billId);
+        const bill = bills.find((b) => Number(b.id) === Number(billId));
 
         if (bill && Number(voteResult.vote_type) === voteType) {
-          billsSet.add(billId);
+          billsCounts.push(billId);
         }
       }
     }
-  }
 
-  return billsSet;
+  return billsCounts;
 };
 
 export const calculateVoteStatistics = (
@@ -34,8 +43,8 @@ export const calculateVoteStatistics = (
   bills: BillsModel[],
   voteResults: VoteResultsModel[],
   votes: VotesModel[]
-): LegislatorOutputModel[] => {
-  const statistics: LegislatorOutputModel[] = [];
+): LegislatorStatsModel[] => {
+  const statistics: LegislatorStatsModel[] = [];
 
   for (const legislator of legislators) {
     const legislatorId = legislator.id;
@@ -46,6 +55,7 @@ export const calculateVoteStatistics = (
       bills,
       1
     );
+
     const opposedBills = getBillsByVoteType(
       legislatorId,
       voteResults,
@@ -57,12 +67,73 @@ export const calculateVoteStatistics = (
     statistics.push({
       id: legislatorId,
       name: legislator.name,
-      num_supported_bills: supportedBills.size,
-      num_opposed_bills: opposedBills.size,
+      num_supported_bills: supportedBills.length,
+      num_opposed_bills: opposedBills.length,
     });
   }
 
   return statistics;
+};
+
+
+export const calculateBillStatistics = (
+  bills: BillsModel[],
+  voteResults: VoteResultsModel[],
+  legislators: LegislatorsModel[],
+  votes: VotesModel[]
+): BillStatsModel[] => {
+  const billStatistics: BillStatsModel[] = [];
+
+  for (const bill of bills) {
+    const billId = bill.id;
+    const primarySponsor = getPrimarySponsorName(legislators, bill.sponsor_id);
+    const { supportCount, opposeCount } = getVoteCounts(
+      votes,
+      voteResults,
+      billId
+    );
+
+    billStatistics.push({
+      id: billId,
+      title: bill.title,
+      supporter_count: supportCount,
+      opposer_count: opposeCount,
+      primary_sponsor: primarySponsor,
+    });
+  }
+
+  return billStatistics;
+};
+
+export const getPrimarySponsorName = (
+  legislators: LegislatorsModel[],
+  sponsorId: number
+): string => {
+  const primarySponsor = legislators.find(
+    (legislator) => Number(legislator.id) === Number(sponsorId)
+  );
+  return primarySponsor?.name || "";
+};
+
+export const getVoteCounts = (
+  votes: VotesModel[],
+  voteResults: VoteResultsModel[],
+  billId: number
+): { supportCount: number; opposeCount: number } => {
+  const filteredVotes = votes.filter((vote) => vote.bill_id === billId);
+  const voteResultIds = filteredVotes.map((vote) => vote.id);
+  const filteredVoteResults = voteResults.filter((vr) =>
+    voteResultIds.includes(vr.vote_id)
+  );
+
+  const supportCount = filteredVoteResults.filter(
+    (vr) => Number(vr.vote_type) === 1
+  ).length;
+  const opposeCount = filteredVoteResults.filter(
+    (vr) => Number(vr.vote_type) === 2
+  ).length;
+
+  return { supportCount, opposeCount };
 };
 
 

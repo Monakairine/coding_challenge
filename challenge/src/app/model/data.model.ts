@@ -1,7 +1,7 @@
 export interface BillsModel {
   id: number;
   title: string;
-  primary_sponsor: number;
+  sponsor_id: number;
 }
 
 export interface LegislatorsModel {
@@ -21,14 +21,14 @@ export interface VoteResultsModel {
   vote_type: number;
 }
 
-export interface LegislatorOutputModel {
+export interface LegislatorStatsModel {
   id: number;
   name: string;
   num_supported_bills: number;
   num_opposed_bills: number;
 }
 
-export interface BillOutputModel {
+export interface BillStatsModel {
   id: number;
   title: string;
   supporter_count: number;
