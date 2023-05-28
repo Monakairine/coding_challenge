@@ -77,6 +77,10 @@ If this were a time-constrained project with the sole objective of generating a 
 
 Additionally, if the data was available in BigQuery, leveraging its SQL querying capabilities would be beneficial. By loading the data into BigQuery tables and using SQL queries, it would be possible to extract the required information and present the results in Looker Studio, a powerful data visualization and exploration tool.
 
+Example of a looker studio dash that would provide the two requested infos:
+
+https://lookerstudio.google.com/reporting/46d269c6-0e32-4156-ad52-a21513a870a8
+
 
 
 
