@@ -100,13 +100,16 @@ ORDER BY l.name;
 ```SQL
 SELECT
   b.title AS bill_title,
+  l.name as primary_sponsor,
   COUNT(CASE WHEN t.vote_type = 1 THEN 1 END) AS num_supported_votes,
   COUNT(CASE WHEN t.vote_type = 2 THEN 1 END) AS num_opposed_votes
 FROM quorum.bills b
+left join quorum.legislators l on l.id = b.primary_sponsor
 LEFT JOIN quorum.votes v ON v.bill_id = b.id
 LEFT JOIN quorum.vote_results t ON t.vote_id = v.id
-GROUP BY b.title
+GROUP BY b.title, l.name
 ORDER BY b.title;
+
 
 ```
 
