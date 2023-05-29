@@ -110,5 +110,5 @@ GROUP BY b.title, l.name
 ORDER BY b.title;
 
 ```
-Another easier path option would be to have used node, so I dont think I choose the smartest path.
+Another easier path option would be to have used node (beggining here https://github.com/Monakairine/coding_challenge_node), so I dont think I choose the smartest path.
 
