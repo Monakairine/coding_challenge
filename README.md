@@ -73,8 +73,7 @@ To account for future columns such as "Bill Voted On Date" or "Co-Sponsors," the
 I dedicated an afternoon and a morning to complete this project. The majority of my time was spent on reading the CSV files and performing the necessary calculations. As I had not previously worked with CSV files directly in frontend applications, this presented a challenge 
 ### Alternative solutions:
 
-If this were a time-constrained project with the sole objective of generating a CSV file with the answers, Python would be a suitable choice. Python, along with libraries like Pandas, provides efficient data processing capabilities and simplifies tasks such as reading CSV files, performing operations, and generating the desired output.
-
+If this were a time-constrained project with the sole objective of generating a CSV file with the answers, Python would be a suitable choice. Python, along with libraries like Pandas, provides efficient data processing capabilities and simplifies tasks such as reading CSV files, performing operations, and generating the desired output. 
 Additionally, if the data was available in BigQuery, leveraging its SQL querying capabilities would be beneficial. By loading the data into BigQuery tables and using SQL queries, it would be possible to extract the required information and present the results in Looker Studio, a powerful data visualization and exploration tool.
 
 Example of a looker studio dash that would provide the two requested infos:
@@ -110,7 +109,6 @@ LEFT JOIN quorum.vote_results t ON t.vote_id = v.id
 GROUP BY b.title, l.name
 ORDER BY b.title;
 
-
 ```
-
+Another easier path option would be to have used node, so I dont think I choose the smartest path.
 
