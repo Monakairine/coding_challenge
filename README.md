@@ -81,6 +81,33 @@ Example of a looker studio dash that would provide the two requested infos:
 
 https://lookerstudio.google.com/reporting/46d269c6-0e32-4156-ad52-a21513a870a8
 
+- Query to answer the first question:
+```SQL
+SELECT
+  l.name,
+  l.id,
+  COUNT(CASE WHEN t.vote_type = 1 THEN 1 END) AS num_supported_bills,
+  COUNT(CASE WHEN t.vote_type = 2 THEN 1 END) AS num_opposed_bills
+FROM quorum.legislators l
+LEFT JOIN quorum.vote_results t ON l.id = t.legislator_id
+LEFT JOIN quorum.votes v ON v.id = t.vote_id
+LEFT JOIN quorum.bills b ON b.id = v.bill_id
+GROUP BY l.name, l.id
+ORDER BY l.name;
+```
 
+- second question:
+```SQL
+SELECT
+  b.title AS bill_title,
+  COUNT(CASE WHEN t.vote_type = 1 THEN 1 END) AS num_supported_votes,
+  COUNT(CASE WHEN t.vote_type = 2 THEN 1 END) AS num_opposed_votes
+FROM quorum.bills b
+LEFT JOIN quorum.votes v ON v.bill_id = b.id
+LEFT JOIN quorum.vote_results t ON t.vote_id = v.id
+GROUP BY b.title
+ORDER BY b.title;
+
+```
 
 
